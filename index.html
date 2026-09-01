@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Franz Schnitler Productions</title>
+<meta name="theme-color" content="#6E2A33">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Franz">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root{
+    --ink:#211613;
+    --parchment:#F2E8D5;
+    --parchment-dim:#E4D6B8;
+    --burgundy:#6E2A33;
+    --burgundy-deep:#4B1C24;
+    --gold:#C9A24B;
+    --gold-bright:#E3C173;
+    --forest:#2F4A3E;
+    --forest-bright:#3E6350;
+    --danger:#A23E2B;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(201,162,75,0.18), transparent 55%),
+      var(--ink);
+    color:var(--parchment);
+    font-family:'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+    min-height:100dvh;
+    overflow-x:hidden;
+  }
+  @font-face{
+    font-family:'Fraunces';
+    src:local('Georgia');
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces','Iowan Old Style', Georgia, 'Times New Roman', serif;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  #app{
+    max-width:520px;
+    margin:0 auto;
+    padding:0 0 48px;
+    position:relative;
+  }
+
+  /* ---------- Header / slate ---------- */
+  header{
+    padding:28px 22px 20px;
+    text-align:center;
+    position:relative;
+    border-bottom:1px solid rgba(201,162,75,0.25);
+  }
+  .eyebrow-strip{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin-bottom:14px;
+  }
+  .eyebrow-strip span{
+    width:14px;height:9px;
+    background:repeating-linear-gradient(45deg, var(--gold) 0 4px, transparent 4px 8px);
+    opacity:.55;
+    border-radius:1px;
+  }
+  header h1{
+    font-size:1.9rem;
+    margin:0 0 4px;
+    color:var(--gold-bright);
+  }
+  header p.sub{
+    margin:0;
+    font-size:0.92rem;
+    color:var(--parchment-dim);
+    font-style:italic;
+  }
+
+  /* ---------- Timer strip ---------- */
+  .timer-strip{
+    margin:20px 22px 0;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(201,162,75,0.25);
+    border-radius:10px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .timer-strip .label{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    color:var(--gold);
+    margin-bottom:2px;
+  }
+  .timer-strip .clock{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
+    color:var(--parchment);
+  }
+  .icon-btn{
+    background:none;
+    border:1px solid rgba(201,162,75,0.4);
+    color:var(--gold-bright);
+    width:38px;height:38px;
+    border-radius:50%;
+    font-size:1rem;
+    cursor:pointer;
+  }
+  .icon-btn:active{ transform:scale(0.92); }
+
+  /* ---------- Main spin section ---------- */
+  main{ padding:26px 22px 10px; }
+
+  .reel{
+    position:relative;
+    border-radius:16px;
+    background:linear-gradient(180deg, rgba(110,42,51,0.35), rgba(47,74,62,0.25));
+    border:1px solid rgba(201,162,75,0.3);
+    padding:26px 20px 22px;
+    text-align:center;
+  }
+  .reel .stamp{
+    font-size:0.72rem;
+    letter-spacing:1.4px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  .reel h2{
+    margin:0 0 14px;
+    font-size:1.15rem;
+    color:var(--parchment);
+    font-weight:500;
+    line-height:1.4;
+  }
+  .call-now-btn{
+    width:100%;
+    padding:16px;
+    border-radius:12px;
+    border:none;
+    background:linear-gradient(180deg, var(--danger), #7C2A1B);
+    color:var(--parchment);
+    font-family:'Fraunces',serif;
+    font-size:1.15rem;
+    letter-spacing:0.3px;
+    cursor:pointer;
+    box-shadow:0 8px 18px rgba(162,62,43,0.35);
+  }
+  .call-now-btn:active{ transform:translateY(1px) scale(0.99); }
+
+  .quick-row{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+  }
+  .ghost-btn{
+    flex:1;
+    padding:11px;
+    border-radius:10px;
+    border:1px solid rgba(201,162,75,0.4);
+    background:transparent;
+    color:var(--gold-bright);
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .ghost-btn:active{ background:rgba(201,162,75,0.1); }
+
+  /* ---------- Storyboard / history ---------- */
+  section.storyboard{ padding:8px 22px 0; }
+  section.storyboard h3{
+    font-size:0.95rem;
+    color:var(--gold);
+    margin:24px 0 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  section.storyboard h3::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:rgba(201,162,75,0.25);
+  }
+  .frame{
+    display:flex;
+    gap:12px;
+    padding:12px 4px;
+    border-bottom:1px dashed rgba(201,162,75,0.2);
+    align-items:flex-start;
+  }
+  .frame .num{
+    font-family:'Fraunces',serif;
+    color:var(--gold);
+    font-size:0.85rem;
+    width:26px;
+    flex-shrink:0;
+    padding-top:2px;
+  }
+  .frame .txt .cat{
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:var(--forest-bright);
+    margin-bottom:2px;
+  }
+  .frame .txt .item{ font-size:0.94rem; }
+  .frame .txt .time{ font-size:0.72rem; color:var(--parchment-dim); margin-top:2px; }
+  .empty-note{
+    font-size:0.85rem;
+    color:var(--parchment-dim);
+    font-style:italic;
+    padding:10px 4px 20px;
+  }
+
+  /* ---------- Overlays (call / meditate / result) ---------- */
+  .overlay{
+    position:fixed; inset:0;
+    background:var(--ink);
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:32px 26px;
+    text-align:center;
+    animation:fadein .25s ease;
+  }
+  @keyframes fadein{ from{opacity:0} to{opacity:1} }
+
+  /* incoming call */
+  .caller-photo{
+    width:118px;height:118px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--burgundy) 70%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;
+    font-size:2.6rem;
+    color:var(--ink);
+    margin-bottom:18px;
+    animation:pulse 1.1s ease-in-out infinite;
+    box-shadow:0 0 0 0 rgba(201,162,75,0.5);
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(201,162,75,0.45); }
+    70%{ box-shadow:0 0 0 26px rgba(201,162,75,0); }
+    100%{ box-shadow:0 0 0 0 rgba(201,162,75,0); }
+  }
+  .caller-name{ font-size:1.5rem; margin:0 0 4px; }
+  .caller-sub{ color:var(--parchment-dim); font-size:0.9rem; margin-bottom:44px; }
+  .call-actions{ display:flex; gap:50px; }
+  .round-btn{
+    width:64px;height:64px;
+    border-radius:50%;
+    border:none;
+    font-size:1.5rem;
+    color:#fff;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .round-btn.answer{ background:var(--forest-bright); }
+  .round-btn.decline{ background:var(--danger); }
+  .round-btn span.lbl{
+    display:block; font-size:0.7rem; margin-top:6px; color:var(--parchment-dim);
+  }
+  .round-wrap{ display:flex; flex-direction:column; align-items:center; }
+
+  /* result / briefing */
+  .brief-card{
+    max-width:420px;
+    width:100%;
+  }
+  .brief-card .kicker{
+    font-size:0.75rem;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  .brief-card .cat-label{
+    font-size:1rem;
+    color:var(--forest-bright);
+    margin-bottom:6px;
+  }
+  .brief-card h2{
+    font-size:1.7rem;
+    margin:0 0 18px;
+    line-height:1.3;
+    color:var(--parchment);
+  }
+  .franz-quote{
+    background:rgba(255,255,255,0.04);
+    border-left:3px solid var(--gold);
+    padding:12px 14px;
+    font-size:0.88rem;
+    font-style:italic;
+    color:var(--parchment-dim);
+    text-align:left;
+    border-radius:0 8px 8px 0;
+    margin-bottom:26px;
+  }
+  .primary-btn{
+    width:100%;
+    padding:15px;
+    border-radius:12px;
+    border:none;
+    background:var(--gold);
+    color:var(--ink);
+    font-family:'Fraunces',serif;
+    font-size:1.05rem;
+    cursor:pointer;
+    margin-bottom:10px;
+  }
+  .primary-btn:active{ transform:scale(0.99); }
+  .link-btn{
+    background:none;border:none;color:var(--parchment-dim);
+    font-size:0.82rem; text-decoration:underline; cursor:pointer;
+  }
+
+  /* meditate */
+  .breath-ring{
+    width:150px;height:150px;
+    border-radius:50%;
+    border:1.5px solid rgba(201,162,75,0.5);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:26px;
+    animation:breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{ transform:scale(0.85); border-color:rgba(201,162,75,0.35);}
+    50%{ transform:scale(1.05); border-color:rgba(201,162,75,0.75);}
+  }
+  .breath-ring .mm{
+    font-family:'Fraunces',serif;
+    font-size:2.1rem;
+  }
+  .meditate-caption{ max-width:280px; color:var(--parchment-dim); font-size:0.92rem; margin-bottom:30px; }
+
+  /* film scene */
+  .word-inputs{ display:flex; flex-direction:column; gap:10px; width:100%; max-width:320px; margin-bottom:22px;}
+  .word-inputs input{
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid rgba(201,162,75,0.4);
+    background:rgba(255,255,255,0.04);
+    color:var(--parchment);
+    font-size:0.95rem;
+  }
+  .word-inputs input::placeholder{ color:rgba(242,232,213,0.4); }
+  .scene-words{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:24px;
+  }
+  .scene-words span{
+    padding:8px 14px;
+    border-radius:20px;
+    background:rgba(201,162,75,0.14);
+    border:1px solid rgba(201,162,75,0.4);
+    font-family:'Fraunces',serif;
+  }
+
+  /* settings sheet */
+  .sheet{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.55);
+    z-index:60;
+    display:flex; align-items:flex-end;
+  }
+  .sheet-inner{
+    background:var(--ink);
+    border-top:1px solid rgba(201,162,75,0.3);
+    border-radius:18px 18px 0 0;
+    width:100%;
+    max-width:520px;
+    margin:0 auto;
+    padding:22px 22px 30px;
+    max-height:82vh;
+    overflow-y:auto;
+  }
+  .sheet-inner h3{ margin:0 0 16px; color:var(--gold-bright); }
+  .row{ display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .row label{ font-size:0.9rem; }
+  .stepper{ display:flex; align-items:center; gap:12px; }
+  .stepper button{
+    width:32px;height:32px;border-radius:50%;border:1px solid rgba(201,162,75,0.4);
+    background:transparent;color:var(--gold-bright);font-size:1rem;cursor:pointer;
+  }
+  .switch{
+    width:44px;height:26px;border-radius:20px;background:rgba(255,255,255,0.15);
+    position:relative;cursor:pointer;border:none;
+  }
+  .switch::after{
+    content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+    background:var(--parchment);transition:left .18s ease;
+  }
+  .switch.on{ background:var(--forest-bright); }
+  .switch.on::after{ left:21px; }
+  select.cat-select{
+    width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,0.04);
+    border:1px solid rgba(201,162,75,0.4);color:var(--parchment);font-size:0.9rem;margin-bottom:12px;
+  }
+  input.new-item{
+    width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,0.04);
+    border:1px solid rgba(201,162,75,0.4);color:var(--parchment);font-size:0.9rem;margin-bottom:12px;
+  }
+  .close-sheet{
+    display:block;margin:6px auto 0;background:none;border:none;color:var(--parchment-dim);
+    font-size:0.85rem;cursor:pointer;
+  }
+  footer.credit{
+    text-align:center;
+    color:rgba(242,232,213,0.35);
+    font-size:0.72rem;
+    padding:26px 22px 6px;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="eyebrow-strip">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <h1>Franz Schnitler Productions</h1>
+    <p class="sub">7 dagen, één film. Wenen levert de set.</p>
+  </header>
+
+  <div class="timer-strip">
+    <div>
+      <div class="label">Volgend telefoontje</div>
+      <div class="clock" id="clock">30:00</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="text-align:right;">
+        <div class="label" style="margin-bottom:6px;">Bel mij</div>
+        <button class="switch on" id="callsSwitch" title="Automatisch gebeld worden aan/uit"></button>
+      </div>
+      <button class="icon-btn" id="settingsBtn" title="Instellingen">⚙</button>
+    </div>
+  </div>
+  <p id="callsOffNote" style="display:none;margin:10px 22px 0;font-size:.78rem;color:var(--parchment-dim);font-style:italic;">
+    Automatisch bellen staat uit. Franz belt niet vanzelf — je kunt hem nog altijd zelf bellen.
+  </p>
+
+  <main>
+    <div class="reel">
+      <div class="stamp">Scene <span id="sceneCount">1</span> · Wenen</div>
+      <h2>Franz belt vanzelf, of jij belt hem.</h2>
+      <button class="call-now-btn" id="callNowBtn">☎ Bel Franz nu</button>
+      <div class="quick-row">
+        <button class="ghost-btn" id="addBtn">＋ Iets toevoegen</button>
+        <button class="ghost-btn" id="pickBtn">🎲 Zelf kiezen</button>
+        <button class="ghost-btn" id="characterBtn">🎭 Karakter</button>
+      </div>
+    </div>
+  </main>
+
+  <section class="storyboard">
+    <h3>Storyboard tot nu toe</h3>
+    <div id="history">
+      <p class="empty-note">Nog geen scenes gedraaid — de film begint zodra Franz belt.</p>
+    </div>
+  </section>
+
+  <div style="padding:12px 22px 0;text-align:center;color:rgba(242,232,213,.45);font-size:.7rem;">
+    Alles wat hier gebeurt blijft bewaard op dit toestel, ook na herstarten. Zet "Meldingen ook als app dicht is" aan
+    in instellingen ⚙ voor een echte pushmelding terwijl de app volledig gesloten is.
+  </div>
+  <footer class="credit">Een productie van niemand in het bijzonder · Wenen</footer>
+</div>
+
+<!-- ===== incoming call overlay ===== -->
+<div class="overlay" id="callOverlay" style="display:none;">
+  <div class="round-wrap">
+    <div class="caller-photo">FS</div>
+  </div>
+  <h2 class="caller-name">Franz Schnitler</h2>
+  <p class="caller-sub" id="callSub">inkomende oproep…</p>
+  <div class="call-actions">
+    <div class="round-wrap">
+      <button class="round-btn decline" id="declineBtn">✕</button>
+      <span class="lbl">weiger (30 sec later)</span>
+    </div>
+    <div class="round-wrap">
+      <button class="round-btn answer" id="answerBtn">☎</button>
+      <span class="lbl">opnemen</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== briefing overlay (result) ===== -->
+<div class="overlay" id="briefOverlay" style="display:none;">
+  <div class="brief-card">
+    <div class="kicker">Franz zegt —</div>
+    <div class="cat-label" id="briefCat">Categorie</div>
+    <h2 id="briefItem">Opdracht</h2>
+    <div class="franz-quote" id="franzQuote">"Ja hallo, luister eens..."</div>
+    <button class="primary-btn" id="toMeditateBtn">Eerst 3 minuten voelen</button>
+    <button class="link-btn" id="skipMeditateBtn">Sla mediteren over</button>
+  </div>
+</div>
+
+<!-- ===== meditate overlay ===== -->
+<div class="overlay" id="meditateOverlay" style="display:none;">
+  <div class="breath-ring"><span class="mm" id="medClock">3:00</span></div>
+  <p class="meditate-caption">Adem in. Adem uit. Voel wat je eigenlijk wilt met deze opdracht, voordat je begint.</p>
+  <button class="primary-btn" id="startSceneBtn" disabled style="opacity:.4; max-width:280px;">Klaar — start de opdracht</button>
+</div>
+
+<!-- ===== film 3-woorden overlay ===== -->
+<div class="overlay" id="filmOverlay" style="display:none;">
+  <div class="kicker" style="font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">De hele dag is een film</div>
+  <h2 style="margin:0 0 8px;">Ieder één woord</h2>
+  <p class="meditate-caption">Na het mediteren roept iedereen spontaan 1 woord. Typ ze hier in en speel de scene met alle drie.</p>
+  <div class="word-inputs">
+    <input type="text" id="w1" placeholder="Woord van speler 1">
+    <input type="text" id="w2" placeholder="Woord van speler 2">
+    <input type="text" id="w3" placeholder="Woord van speler 3">
+  </div>
+  <button class="primary-btn" id="confirmWordsBtn" style="max-width:320px;">Speel de scene</button>
+</div>
+
+<!-- ===== settings sheet ===== -->
+<div class="sheet" id="settingsSheet" style="display:none;">
+  <div class="sheet-inner">
+    <h3>Instellingen</h3>
+    <div class="row">
+      <label>Interval (minuten)</label>
+      <div class="stepper">
+        <button id="minusInterval">−</button>
+        <span id="intervalVal">30</span>
+        <button id="plusInterval">+</button>
+      </div>
+    </div>
+    <div class="row">
+      <label>Spreiding (± <span id="spreadVal">30</span> min)</label>
+      <div class="stepper">
+        <button id="minusSpread">−</button>
+        <button id="plusSpread">+</button>
+      </div>
+    </div>
+    <div class="row">
+      <label>Willekeurige spreiding gebruiken</label>
+      <button class="switch on" id="jitterSwitch"></button>
+    </div>
+    <div class="row">
+      <label>Geluid</label>
+      <button class="switch on" id="soundSwitch"></button>
+    </div>
+    <div class="row">
+      <label>Beltoon</label>
+      <select class="cat-select" id="ringtoneSelect" style="width:150px;margin:0;">
+        <option value="classic">Klassiek</option>
+        <option value="soft">Zacht</option>
+        <option value="urgent">Urgent</option>
+      </select>
+    </div>
+    <div class="row">
+      <label>Trillen</label>
+      <button class="switch on" id="vibrateSwitch"></button>
+    </div>
+    <div class="row">
+      <label>Trilpatroon</label>
+      <select class="cat-select" id="vibrationSelect" style="width:150px;margin:0;">
+        <option value="classic">3 pulsen</option>
+        <option value="long">Lang</option>
+        <option value="short">Kort</option>
+        <option value="continuous">Lang pulserend</option>
+      </select>
+    </div>
+    <div class="row" style="border-bottom:none; padding-top:22px; margin-top:6px; border-top:1px solid rgba(201,162,75,0.25); flex-direction:column; align-items:flex-start; gap:4px;">
+      <div style="display:flex;width:100%;justify-content:space-between;align-items:center;">
+        <label>Meldingen ook als app dicht is</label>
+        <button class="switch" id="ntfySwitch"></button>
+      </div>
+      <p style="font-size:.76rem;color:var(--parchment-dim);margin:6px 0 10px;line-height:1.45;">
+        Deze app kan zelf geen melding sturen als hij helemaal gesloten is — daarvoor gebruiken we
+        <b>ntfy</b>, een gratis, open meldingendienst. Installeer de gratis <b>ntfy</b>-app (Play Store),
+        abonneer je daarin op onderstaand kanaal, en zet dan deze schakelaar aan. Franz belt daarna ook door
+        via een echte pushmelding, zelfs met deze app dicht.
+      </p>
+      <div style="display:flex; gap:8px; width:100%;">
+        <input type="text" class="new-item" id="ntfyTopicInput" placeholder="kanaalnaam, bijv. franz-wenen-93jd" style="margin-bottom:0;flex:1;">
+        <button class="icon-btn" id="ntfyRandomBtn" title="Genereer willekeurig kanaal" style="flex-shrink:0;">🎲</button>
+      </div>
+      <p style="font-size:.72rem;color:var(--parchment-dim);margin:8px 0 0;">
+        Kanalen op ntfy.sh zijn publiek toegankelijk voor wie de naam weet — kies dus iets unieks, geen
+        makkelijk te raden woord.
+      </p>
+    </div>
+
+    <button class="close-sheet" id="closeSettings">Sluiten</button>
+  </div>
+</div>
+
+<!-- ===== add / pick sheet ===== -->
+<div class="sheet" id="addSheet" style="display:none;">
+  <div class="sheet-inner">
+    <h3 id="addSheetTitle">Iets nieuws toevoegen</h3>
+    <div id="addForm">
+      <select class="cat-select" id="addCatSelect"></select>
+      <input type="text" class="new-item" id="addItemInput" placeholder="Bijv. 'Ober imiteren'">
+      <button class="primary-btn" id="confirmAddBtn">Toevoegen aan het rad</button>
+    </div>
+    <div id="pickForm" style="display:none;">
+      <select class="cat-select" id="pickCatSelect"></select>
+      <select class="cat-select" id="pickItemSelect"></select>
+      <button class="primary-btn" id="confirmPickBtn">Dit wordt de opdracht</button>
+    </div>
+
+    <div id="characterForm" style="display:none;">
+      <input type="text" class="new-item" id="newCharacterInput" placeholder="Bijv. Romy Schneider">
+      <button class="primary-btn" id="confirmCharacterBtn">Karakter toevoegen</button>
+      <div id="characterList" style="margin-top:4px;"></div>
+    </div>
+
+    <button class="close-sheet" id="closeAddSheet">Annuleren</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){ /* ok if this fails, e.g. on file:// */ });
+    });
+  }
+
+  /* ---------------- data ---------------- */
+  const GENRES = ["Documentaire","Horror","Comedy","Romance","Fantasy","Western","Action","Science Fiction"];
+  const CHARACTERS = ["Heidi","Sisi","Marie Antoinette","Sjaak","Freud","Nietzsche",
+      "Mozart","Arnold Schwarzenegger","Franz Ferdinand",
+      "Erwin Schrödinger"]
+
+  const CATEGORIES = {
+    "Eten": [
+      "Broodjes proeverij","Kaas!","Fruit is ook gezond","Vegan ijs","Kaiserschmarrn",
+      "Apfelstrudel","Schnitzel","Knödel","Wurst","Sachertorte","Imperial Torte","Langos"
+    ],
+    "Drinken": [
+      "Blik bier u are beautiful","Flessie rood langs de goot","Witte wijn in het park is zo fijn",
+      "Schnapps snappie","Almdudler","Radler","Most","Skiwasser","Jagertee"
+    ],
+    "Film": ["__FILM_SPECIAL__"],
+    "Regie": [
+      "__CHARACTER_SWITCH__",
+      "Outfit switch!","__GENRE_SPECIAL__"
+    ],
+    "Mini-game": [
+      "Human calculator","Don't say yes/no (interrogatie)","Speed portrait","Pigeon court",
+      "Perconferentie voor iets absurds","Museum curator","Docu style","Ninja","Comedian"
+    ]
+  };
+
+  const FRANZ_LINES = [
+    "\"Ja hallo, luister eens — ik heb weer een geniaal idee gehad in de tram.\"",
+    "\"Dit was NIET wat we hadden afgesproken, maar het script verandert nu.\"",
+    "\"Mijn baronesse zegt dat dit de beste scene wordt, dus doe het gewoon.\"",
+    "\"Ik betaal, dus ik bepaal. Kleine wijziging aan het script.\"",
+    "\"Geen zorgen, dit staat er sowieso niet meer in de definitieve montage.\"",
+    "\"Ach, ik bel morgen wel terug over de rest — eerst dit even doen.\"",
+    "\"Fantastisch, fantastisch. Nu moet het alleen nog gebeuren.\"",
+    "\"Dit idee kreeg ik onder de douche. Bedank me later met een bonus-Sachertorte.\""
+  ];
+
+  /* ---------------- state ---------------- */
+  const STORAGE_KEY = "franz-schnitler-productions-v2";
+  let intervalMinutes = 30;       // mediaan / centrum, standaard 30 min
+  let spreadMinutes = 30;         // ± spreiding, standaard 30 min
+  let jitterOn = true;
+  let soundOn = true;
+  let vibrateOn = true;
+  let ringtone = "classic";
+  let vibrationPattern = "classic";
+  let paused = false;
+  let ntfyEnabled = false;
+  let ntfyTopic = "";
+  let targetAt = 0;
+  let secondsLeft = 0;
+  let tickHandle = null;
+  let history = [];
+  let pendingResult = null; // {cat, item}
+  let audioCtx = null;
+
+  function saveState(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        intervalMinutes, spreadMinutes, jitterOn, soundOn, vibrateOn,
+        ringtone, vibrationPattern, paused, ntfyEnabled, ntfyTopic,
+        targetAt, history, pendingResult, characters: CHARACTERS
+      }));
+    }catch(e){}
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return false;
+      const s = JSON.parse(raw);
+      if(Number.isFinite(s.intervalMinutes)) intervalMinutes = Math.min(120, Math.max(5, s.intervalMinutes));
+      if(Number.isFinite(s.spreadMinutes)) spreadMinutes = Math.min(intervalMinutes, Math.max(0, s.spreadMinutes));
+      if(typeof s.jitterOn === "boolean") jitterOn = s.jitterOn;
+      if(typeof s.soundOn === "boolean") soundOn = s.soundOn;
+      if(typeof s.vibrateOn === "boolean") vibrateOn = s.vibrateOn;
+      if(["classic","soft","urgent"].includes(s.ringtone)) ringtone = s.ringtone;
+      if(["classic","long","short","continuous"].includes(s.vibrationPattern)) vibrationPattern = s.vibrationPattern;
+      if(typeof s.paused === "boolean") paused = s.paused;
+      if(typeof s.ntfyEnabled === "boolean") ntfyEnabled = s.ntfyEnabled;
+      if(typeof s.ntfyTopic === "string") ntfyTopic = s.ntfyTopic;
+      if(Number.isFinite(s.targetAt)) targetAt = s.targetAt;
+      if(Array.isArray(s.history)) history = s.history;
+      if(Array.isArray(s.characters) && s.characters.length) {
+        CHARACTERS.splice(0, CHARACTERS.length, ...s.characters);
+      }
+      if(s.pendingResult && s.pendingResult.cat && s.pendingResult.item) pendingResult = s.pendingResult;
+      return true;
+    }catch(e){ return false; }
+  }
+
+  function randomiseInterval(){
+    // Uniformly random around the median: 30 ± 30 min => 0–60 min.
+    // The minimum is 1 minute so a call is never scheduled for "now".
+    const spread = jitterOn ? Math.min(spreadMinutes, intervalMinutes) : 0;
+    const min = Math.max(1, intervalMinutes - spread);
+    const max = Math.max(min, intervalMinutes + spread);
+    return Math.max(60, Math.round((min + Math.random() * (max - min)) * 60));
+  }
+
+  function scheduleNextCall(){
+    secondsLeft = randomiseInterval();
+    targetAt = Date.now() + secondsLeft * 1000;
+    saveState();
+    updateClock();
+    if(!paused) scheduleNtfyPush(secondsLeft);
+  }
+
+  // Schedules a real push notification via ntfy.sh, timed to land when the
+  // next call is due. ntfy's server holds the schedule and delivers it even
+  // if this app/tab is fully closed — that's the part plain page JS can't do.
+  // Rescheduling (e.g. after a change of settings) just adds another
+  // scheduled push; there's no cancel endpoint, so an occasional extra
+  // notification is possible and can just be ignored.
+  function scheduleNtfyPush(seconds){
+    if(!ntfyEnabled || !ntfyTopic) return;
+    try{
+      const minutes = Math.max(1, Math.round(seconds / 60));
+      fetch("https://ntfy.sh/" + encodeURIComponent(ntfyTopic), {
+        method: "POST",
+        headers: {
+          "Title": "Franz belt",
+          "Delay": minutes + "m",
+          "Tags": "phone,clapper"
+        },
+        body: "Er staat een nieuwe scène klaar. Open de app om op te nemen."
+      }).catch(()=>{});
+    }catch(e){}
+  }
+
+  function updateClock(){
+    if(paused){
+      clockEl.textContent = "uit";
+      return;
+    }
+    secondsLeft = Math.max(0, Math.ceil((targetAt - Date.now()) / 1000));
+    clockEl.textContent = fmt(secondsLeft);
+  }
+
+  /* ---------------- helpers ---------------- */
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  function fmt(sec){
+    const m = Math.floor(sec/60), s = sec%60;
+    return m + ":" + String(s).padStart(2,"0");
+  }
+
+  function randomiseInterval(){
+    let base = intervalMinutes*60;
+    if(jitterOn){
+      const jitter = Math.floor((Math.random()*10-5)*60); // ±5 min
+      base = Math.max(60, base + jitter);
+    }
+    return base;
+  }
+
+  function requestNotifications(){
+    try{
+      if("Notification" in window && Notification.permission === "default"){
+        Notification.requestPermission();
+      }
+    }catch(e){}
+  }
+
+  function notifyCall(){
+    try{
+      if("Notification" in window && Notification.permission === "granted"){
+        new Notification("Franz belt", {
+          body: "Er staat een nieuwe scène klaar.",
+          tag: "franz-call",
+          renotify: true
+        });
+      }
+    }catch(e){}
+  }
+
+  function beep(){
+    if(!soundOn) return;
+    try{
+      audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+      const patterns = {
+        classic: [523.25, 659.25, 783.99],
+        soft: [440, 554.37, 659.25],
+        urgent: [880, 0, 880, 0, 1046.5]
+      };
+      const notes = patterns[ringtone] || patterns.classic;
+      notes.forEach((freq, i)=>{
+        if(!freq) return;
+        const startTime = audioCtx.currentTime + i*0.16;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = ringtone === "urgent" ? "square" : "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.linearRampToValueAtTime(ringtone === "soft" ? 0.08 : 0.15, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.14);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.15);
+      });
+    }catch(e){}
+  }
+
+  function vibrate(pattern){
+    if(vibrateOn && navigator.vibrate) navigator.vibrate(pattern);
+  }
+
+  /* ---------------- timer loop ---------------- */
+  const clockEl = document.getElementById("clock");
+
+  function tick(){
+    if(paused) return;
+    updateClock();
+    if(targetAt && Date.now() >= targetAt){
+      targetAt = 0;
+      saveState();
+      triggerCall();
+    }
+  }
+
+  function startTimerLoop(){
+    if(tickHandle) clearInterval(tickHandle);
+    tickHandle = setInterval(tick, 1000);
+  }
+
+  function resetTimer(){
+    scheduleNextCall();
+  }
+
+  const restored = loadState();
+  if(!restored || (!paused && (!targetAt || targetAt <= Date.now()))){
+    scheduleNextCall();
+  }else{
+    secondsLeft = paused
+      ? Math.max(0, secondsLeft)
+      : Math.max(0, Math.ceil((targetAt - Date.now()) / 1000));
+    updateClock();
+  }
+
+  const callsSwitch = document.getElementById("callsSwitch");
+  const callsOffNote = document.getElementById("callsOffNote");
+
+  function reflectCallsToggle(){
+    callsSwitch.classList.toggle("on", !paused);
+    callsOffNote.style.display = paused ? "block" : "none";
+  }
+
+  callsSwitch.addEventListener("click", function(){
+    if(!paused){
+      secondsLeft = Math.max(0, Math.ceil((targetAt - Date.now()) / 1000));
+      paused = true;
+    }else{
+      paused = false;
+      targetAt = Date.now() + Math.max(1, secondsLeft) * 1000;
+      scheduleNtfyPush(secondsLeft);
+    }
+    reflectCallsToggle();
+    saveState();
+    updateClock();
+  });
+
+  reflectCallsToggle();
+
+  startTimerLoop();
+
+  // When the browser resumes after being backgrounded/minimized, immediately
+  // recalculate from the real clock instead of relying on missed setInterval ticks.
+  document.addEventListener("visibilitychange", function(){
+    updateClock();
+    tick();
+  });
+
+  window.addEventListener("pageshow", function(){
+    updateClock();
+    tick();
+  });
+
+  /* ---------------- call flow ---------------- */
+  const callOverlay = document.getElementById("callOverlay");
+  const callSub = document.getElementById("callSub");
+
+  function triggerCall(){
+    if(callOverlay.style.display === "flex") return;
+    if(!pendingResult) rollResult();
+    beep();
+    vibrate({
+      classic: [300,150,300,150,300],
+      long: [800,250,800],
+      short: [120,100,120,100,120],
+      continuous: [1000,300,1000,300,1000]
+    }[vibrationPattern] || [300,150,300,150,300]);
+    notifyCall();
+    callSub.textContent = "inkomende oproep…";
+    callOverlay.style.display = "flex";
+    saveState();
+  }
+
+  document.getElementById("callNowBtn").addEventListener("click", function(){
+    requestNotifications();
+    rollResult();
+    triggerCall();
+  });
+
+  document.getElementById("declineBtn").addEventListener("click", function(){
+    callOverlay.style.display = "none";
+    callSub.textContent = "gemist";
+    pendingResult = null;
+    scheduleNextCall();
+    saveState();
+  });
+
+  document.getElementById("answerBtn").addEventListener("click", function(){
+    callOverlay.style.display = "none";
+    showBriefing();
+    saveState();
+  });
+
+  function rollResult(){
+    const catNames = Object.keys(CATEGORIES);
+    const cat = pick(catNames);
+    let item = pick(CATEGORIES[cat]);
+    pendingResult = {
+      cat,
+      item,
+      characterData: item === "__CHARACTER_SWITCH__" ? characterSwitchResult() : null
+    };
+  }
+
+  /* ---------------- briefing ---------------- */
+  const briefOverlay = document.getElementById("briefOverlay");
+  const briefCat = document.getElementById("briefCat");
+  const briefItem = document.getElementById("briefItem");
+  const franzQuote = document.getElementById("franzQuote");
+
+  function characterSwitchResult(){
+    const shuffled = [...CHARACTERS].sort(()=>Math.random()-0.5);
+    return {
+      timo: shuffled[0] || "Onbekend",
+      lianne: shuffled[1] || shuffled[0] || "Onbekend",
+      bas: shuffled[2] || shuffled[1] || shuffled[0] || "Onbekend"
+    };
+  }
+
+  function labelFor(cat, item, characterData){
+    if(item === "__FILM_SPECIAL__") return "De hele dag is een film";
+    if(item === "__GENRE_SPECIAL__") return "Genre switch: " + pick(GENRES);
+    if(item === "__CHARACTER_SWITCH__"){
+      const c = characterData || characterSwitchResult();
+      return "Timo: " + c.timo + " · Lianne: " + c.lianne + " · Bas: " + c.bas;
+    }
+    return item;
+  }
+
+  function showBriefing(){
+    if(!pendingResult) rollResult();
+    briefCat.textContent = pendingResult.cat;
+    briefItem.textContent = labelFor(pendingResult.cat, pendingResult.item, pendingResult.characterData);
+    franzQuote.textContent = pick(FRANZ_LINES);
+    briefOverlay.style.display = "flex";
+  }
+
+  document.getElementById("toMeditateBtn").addEventListener("click", startMeditation);
+  document.getElementById("skipMeditateBtn").addEventListener("click", function(){
+    briefOverlay.style.display = "none";
+    afterMeditation();
+  });
+
+  /* ---------------- meditation ---------------- */
+  const meditateOverlay = document.getElementById("meditateOverlay");
+  const medClock = document.getElementById("medClock");
+  const startSceneBtn = document.getElementById("startSceneBtn");
+  let medSeconds = 180;
+  let medHandle = null;
+
+  function startMeditation(){
+    briefOverlay.style.display = "none";
+    medSeconds = 180;
+    medClock.textContent = fmt(medSeconds);
+    startSceneBtn.disabled = true;
+    startSceneBtn.style.opacity = ".4";
+    meditateOverlay.style.display = "flex";
+    if(medHandle) clearInterval(medHandle);
+    medHandle = setInterval(()=>{
+      medSeconds--;
+      if(medSeconds <= 0){
+        clearInterval(medHandle);
+        medClock.textContent = "Klaar";
+        startSceneBtn.disabled = false;
+        startSceneBtn.style.opacity = "1";
+        vibrate([200]);
+      } else {
+        medClock.textContent = fmt(medSeconds);
+      }
+    }, 1000);
+  }
+
+  startSceneBtn.addEventListener("click", function(){
+    meditateOverlay.style.display = "none";
+    afterMeditation();
+  });
+
+  /* ---------------- special: film scene ---------------- */
+  const filmOverlay = document.getElementById("filmOverlay");
+
+  function afterMeditation(){
+    if(pendingResult && pendingResult.item === "__FILM_SPECIAL__"){
+      document.getElementById("w1").value = "";
+      document.getElementById("w2").value = "";
+      document.getElementById("w3").value = "";
+      filmOverlay.style.display = "flex";
+      return;
+    }
+    logAndFinish();
+  }
+
+  document.getElementById("confirmWordsBtn").addEventListener("click", function(){
+    const w1 = document.getElementById("w1").value.trim() || "?";
+    const w2 = document.getElementById("w2").value.trim() || "?";
+    const w3 = document.getElementById("w3").value.trim() || "?";
+    filmOverlay.style.display = "none";
+    logAndFinish(w1 + " · " + w2 + " · " + w3);
+  });
+
+  /* ---------------- history / storyboard ---------------- */
+  const historyEl = document.getElementById("history");
+  const sceneCountEl = document.getElementById("sceneCount");
+
+  function logAndFinish(extra){
+    const label = labelFor(pendingResult.cat, pendingResult.item, pendingResult.characterData) + (extra ? " — " + extra : "");
+    const now = new Date();
+    const timeStr = now.getHours().toString().padStart(2,"0") + ":" + now.getMinutes().toString().padStart(2,"0");
+    history.unshift({ cat: pendingResult.cat, item: label, time: timeStr });
+    renderHistory();
+    pendingResult = null;
+    resetTimer();
+    saveState();
+  }
+
+  function renderHistory(){
+    sceneCountEl.textContent = history.length + 1;
+    if(history.length === 0){
+      historyEl.innerHTML = '<p class="empty-note">Nog geen scenes gedraaid — de film begint zodra Franz belt.</p>';
+      return;
+    }
+    historyEl.innerHTML = history.map((h, i)=>{
+      const num = history.length - i;
+      return '<div class="frame"><div class="num">' + String(num).padStart(2,"0") + '</div>' +
+        '<div class="txt"><div class="cat">' + h.cat + '</div>' +
+        '<div class="item">' + h.item + '</div>' +
+        '<div class="time">' + h.time + ' uur</div></div></div>';
+    }).join("");
+  }
+
+  /* ---------------- settings sheet ---------------- */
+  const settingsSheet = document.getElementById("settingsSheet");
+  document.getElementById("settingsBtn").addEventListener("click", ()=> settingsSheet.style.display = "flex");
+  document.getElementById("closeSettings").addEventListener("click", ()=> settingsSheet.style.display = "none");
+
+  const intervalVal = document.getElementById("intervalVal");
+  const spreadVal = document.getElementById("spreadVal");
+
+  document.getElementById("minusInterval").addEventListener("click", function(){
+    intervalMinutes = Math.max(5, intervalMinutes - 5);
+    spreadMinutes = Math.min(spreadMinutes, intervalMinutes);
+    intervalVal.textContent = intervalMinutes;
+    spreadVal.textContent = spreadMinutes;
+    saveState();
+    if(!paused) resetTimer();
+  });
+  document.getElementById("plusInterval").addEventListener("click", function(){
+    intervalMinutes = Math.min(120, intervalMinutes + 5);
+    intervalVal.textContent = intervalMinutes;
+    saveState();
+    if(!paused) resetTimer();
+  });
+  document.getElementById("minusSpread").addEventListener("click", function(){
+    spreadMinutes = Math.max(0, spreadMinutes - 5);
+    spreadVal.textContent = spreadMinutes;
+    saveState();
+    if(!paused) resetTimer();
+  });
+  document.getElementById("plusSpread").addEventListener("click", function(){
+    spreadMinutes = Math.min(intervalMinutes, spreadMinutes + 5);
+    spreadVal.textContent = spreadMinutes;
+    saveState();
+    if(!paused) resetTimer();
+  });
+
+  function wireSwitch(id, setter, initial){
+    const el = document.getElementById(id);
+    if(!initial) el.classList.remove("on");
+    el.addEventListener("click", function(){
+      el.classList.toggle("on");
+      setter(el.classList.contains("on"));
+    });
+  }
+  wireSwitch("jitterSwitch", v=> { jitterOn = v; saveState(); if(!paused) resetTimer(); }, jitterOn);
+  wireSwitch("soundSwitch", v=> { soundOn = v; saveState(); }, soundOn);
+  wireSwitch("vibrateSwitch", v=> { vibrateOn = v; saveState(); }, vibrateOn);
+  wireSwitch("ntfySwitch", v=>{
+    ntfyEnabled = v;
+    saveState();
+    if(ntfyEnabled && ntfyTopic && !paused){
+      const secs = targetAt ? Math.max(1, Math.ceil((targetAt - Date.now())/1000)) : secondsLeft;
+      scheduleNtfyPush(secs);
+    }
+  }, ntfyEnabled);
+
+  const ntfyTopicInput = document.getElementById("ntfyTopicInput");
+  ntfyTopicInput.value = ntfyTopic;
+  ntfyTopicInput.addEventListener("change", function(){
+    ntfyTopic = this.value.trim();
+    saveState();
+  });
+  document.getElementById("ntfyRandomBtn").addEventListener("click", function(){
+    const rand = "franz-wenen-" + Math.random().toString(36).slice(2, 8);
+    ntfyTopicInput.value = rand;
+    ntfyTopic = rand;
+    saveState();
+  });
+
+  document.getElementById("ringtoneSelect").addEventListener("change", function(){
+    ringtone = this.value;
+    saveState();
+  });
+  document.getElementById("vibrationSelect").addEventListener("change", function(){
+    vibrationPattern = this.value;
+    saveState();
+  });
+
+  /* ---------------- add / pick sheet ---------------- */
+  const addSheet = document.getElementById("addSheet");
+  const addSheetTitle = document.getElementById("addSheetTitle");
+  const addForm = document.getElementById("addForm");
+  const pickForm = document.getElementById("pickForm");
+  const addCatSelect = document.getElementById("addCatSelect");
+  const pickCatSelect = document.getElementById("pickCatSelect");
+  const pickItemSelect = document.getElementById("pickItemSelect");
+
+  try{
+    const savedCats = JSON.parse(localStorage.getItem(STORAGE_KEY + "-categories") || "null");
+    if(savedCats && typeof savedCats === "object"){
+      Object.keys(savedCats).forEach(cat=>{
+        if(Array.isArray(savedCats[cat])) CATEGORIES[cat] = savedCats[cat];
+      });
+    }
+  }catch(e){}
+
+  function populateCategorySelects(){
+    const opts = Object.keys(CATEGORIES).map(c=>'<option value="'+c+'">'+c+'</option>').join("");
+    addCatSelect.innerHTML = opts;
+    pickCatSelect.innerHTML = opts;
+    populatePickItems();
+  }
+  function populatePickItems(){
+    const cat = pickCatSelect.value;
+    const items = CATEGORIES[cat] || [];
+    pickItemSelect.innerHTML = items.map(it=>{
+      const label = it === "__FILM_SPECIAL__" ? "De hele dag is een film" :
+                    it === "__GENRE_SPECIAL__" ? "Genre switch" :
+                    it === "__CHARACTER_SWITCH__" ? "Character switch" : it;
+      return '<option value="'+encodeURIComponent(it)+'">'+label+'</option>';
+    }).join("");
+  }
+  pickCatSelect.addEventListener("change", populatePickItems);
+  populateCategorySelects();
+  intervalVal.textContent = intervalMinutes;
+  spreadVal.textContent = spreadMinutes;
+  document.getElementById("jitterSwitch").classList.toggle("on", jitterOn);
+  document.getElementById("soundSwitch").classList.toggle("on", soundOn);
+  document.getElementById("vibrateSwitch").classList.toggle("on", vibrateOn);
+  document.getElementById("ntfySwitch").classList.toggle("on", ntfyEnabled);
+  document.getElementById("ringtoneSelect").value = ringtone;
+  document.getElementById("vibrationSelect").value = vibrationPattern;
+  renderHistory();
+
+  const characterForm = document.getElementById("characterForm");
+  const newCharacterInput = document.getElementById("newCharacterInput");
+  const characterList = document.getElementById("characterList");
+
+  function renderCharacterList(){
+    if(!characterList) return;
+    characterList.innerHTML = '<div class="character-list">' +
+      CHARACTERS.map((name, i)=>
+        '<span class="character-chip">' + name.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])) +
+        ' <button type="button" data-character-index="' + i + '" title="Verwijder">×</button></span>'
+      ).join("") + '</div>';
+    characterList.querySelectorAll("[data-character-index]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const i = Number(btn.dataset.characterIndex);
+        if(CHARACTERS.length <= 1) return;
+        CHARACTERS.splice(i, 1);
+        saveState();
+        renderCharacterList();
+      });
+    });
+  }
+
+  document.getElementById("characterBtn").addEventListener("click", function(){
+    addSheetTitle.textContent = "Karakters beheren";
+    addForm.style.display = "none";
+    pickForm.style.display = "none";
+    characterForm.style.display = "block";
+    newCharacterInput.value = "";
+    renderCharacterList();
+    addSheet.style.display = "flex";
+  });
+
+  document.getElementById("confirmCharacterBtn").addEventListener("click", function(){
+    const name = newCharacterInput.value.trim();
+    if(!name) return;
+    if(!CHARACTERS.some(c=>c.toLowerCase() === name.toLowerCase())){
+      CHARACTERS.push(name);
+      saveState();
+      renderCharacterList();
+    }
+    newCharacterInput.value = "";
+    newCharacterInput.focus();
+  });
+
+  document.getElementById("addBtn").addEventListener("click", function(){
+    addSheetTitle.textContent = "Iets nieuws toevoegen";
+    addForm.style.display = "block";
+    pickForm.style.display = "none";
+    characterForm.style.display = "none";
+    addSheet.style.display = "flex";
+  });
+  document.getElementById("pickBtn").addEventListener("click", function(){
+    addSheetTitle.textContent = "Kies zelf de volgende opdracht";
+    addForm.style.display = "none";
+    pickForm.style.display = "block";
+    characterForm.style.display = "none";
+    addSheet.style.display = "flex";
+  });
+  document.getElementById("closeAddSheet").addEventListener("click", ()=> { addSheet.style.display = "none"; saveState(); });
+
+  document.getElementById("confirmAddBtn").addEventListener("click", function(){
+    const cat = addCatSelect.value;
+    const val = document.getElementById("addItemInput").value.trim();
+    if(!val) return;
+    CATEGORIES[cat].push(val);
+    try{
+      localStorage.setItem(STORAGE_KEY + "-categories", JSON.stringify(CATEGORIES));
+    }catch(e){}
+    document.getElementById("addItemInput").value = "";
+    populatePickItems();
+    addSheet.style.display = "none";
+  });
+
+  window.addEventListener("beforeunload", saveState);
+
+  document.getElementById("confirmPickBtn").addEventListener("click", function(){
+    const cat = pickCatSelect.value;
+    const item = decodeURIComponent(pickItemSelect.value);
+    pendingResult = {
+      cat,
+      item,
+      characterData: item === "__CHARACTER_SWITCH__" ? characterSwitchResult() : null
+    };
+    addSheet.style.display = "none";
+    showBriefing();
+  });
+
+})();
+</script>
+</body>
+</html>
