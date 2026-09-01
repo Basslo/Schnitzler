@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.basslo.twa",
+        "sha256_cert_fingerprints": ["23:9A:A5:65:2D:70:E8:3A:4F:07:9A:D1:15:8D:2C:E0:F8:7D:A4:CA:98:B7:6A:F4:32:19:98:A5:C1:8E:F5:9F"]
+      }
+    }]
