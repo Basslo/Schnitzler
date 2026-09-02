@@ -834,15 +834,6 @@
     return m + ":" + String(s).padStart(2,"0");
   }
 
-  function randomiseInterval(){
-    let base = intervalMinutes*60;
-    if(jitterOn){
-      const jitter = Math.floor((Math.random()*10-5)*60); // ±5 min
-      base = Math.max(60, base + jitter);
-    }
-    return base;
-  }
-
   function requestNotifications(){
     try{
       if("Notification" in window && Notification.permission === "default"){
@@ -986,6 +977,11 @@
 
   document.getElementById("callNowBtn").addEventListener("click", function(){
     requestNotifications();
+
+    // A manual call must always work, even when automatic calls are paused.
+    // Cancel the current countdown and start a fresh manual call.
+    targetAt = 0;
+    secondsLeft = 0;
     rollResult();
     triggerCall();
   });
@@ -1304,6 +1300,11 @@
     if(mode === "manage") renderManage("items");
   }
 
+  // Annuleren must always close the add/pick/manage/character sheet.
+  document.getElementById("closeAddSheet").addEventListener("click", function(){
+    addSheet.style.display = "none";
+  });
+
   function renderManage(kind){
     const content = document.getElementById("manageContent");
     const tabs = manageForm.querySelectorAll(".manage-tab");
@@ -1515,18 +1516,6 @@
   renderCharacterList();
 
   window.addEventListener("beforeunload", saveState);
-
-  document.getElementById("confirmPickBtn").addEventListener("click", function(){
-    const cat = pickCatSelect.value;
-    const item = decodeURIComponent(pickItemSelect.value);
-    pendingResult = {
-      cat,
-      item,
-      characterData: item === "__CHARACTER_SWITCH__" ? characterSwitchResult() : null
-    };
-    addSheet.style.display = "none";
-    showBriefing();
-  });
 
 })();
 </script>
